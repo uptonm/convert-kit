@@ -9,29 +9,29 @@ export default function HomePage() {
 
   return (
     <div>
-      <section className="relative min-h-[min(88vh,820px)] overflow-hidden border-b border-white/5">
+      <section className="relative overflow-hidden border-b border-white/5">
         <FormatMorph />
-        <div className="relative z-[1] mx-auto flex max-w-6xl flex-col justify-end px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-32">
-          <p className="ck-rise font-mono text-[11px] uppercase tracking-[0.22em] text-primary/90">
+        <div className="relative z-[1] mx-auto flex min-h-[min(78vh,720px)] max-w-6xl flex-col justify-center px-4 py-20 sm:px-6 sm:py-24">
+          <p className="ck-rise font-mono text-[11px] uppercase tracking-[0.22em] text-primary">
             Local conversion · convert.uptonm.dev
           </p>
-          <h1 className="ck-rise ck-rise-delay-1 mt-5 font-display text-[clamp(3.25rem,12vw,7.5rem)] font-extrabold leading-[0.88] tracking-[-0.05em] text-foreground">
+          <h1 className="ck-rise ck-rise-delay-1 mt-4 max-w-[11ch] font-display text-[clamp(3.5rem,13vw,8rem)] font-extrabold leading-[0.86] tracking-[-0.055em] text-foreground">
             Convert
             <span className="text-primary">Kit</span>
           </h1>
-          <p className="ck-rise ck-rise-delay-2 mt-6 max-w-md text-lg text-muted-foreground text-balance sm:text-xl">
+          <p className="ck-rise ck-rise-delay-2 mt-7 max-w-md text-lg text-muted-foreground text-balance sm:text-xl">
             Files in. Files out. Nothing leaves your browser.
           </p>
-          <div className="ck-rise ck-rise-delay-3 mt-10 flex flex-wrap items-center gap-4">
+          <div className="ck-rise ck-rise-delay-3 mt-10 flex flex-wrap items-center gap-3">
             <a
               href="#catalog"
-              className="inline-flex h-11 items-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition hover:brightness-110"
+              className="inline-flex h-11 items-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
             >
               Browse converters
             </a>
             <Link
               href="/documents/epub-to-pdf"
-              className="inline-flex h-11 items-center gap-1.5 rounded-full border border-white/10 px-5 text-sm text-foreground/90 transition hover:border-primary/40 hover:text-primary"
+              className="inline-flex h-11 items-center gap-1.5 rounded-full border border-white/12 bg-white/[0.03] px-5 text-sm text-foreground/90 transition hover:border-primary/50 hover:text-primary"
             >
               Try EPUB → PDF
               <ArrowUpRight className="size-3.5 opacity-70" />

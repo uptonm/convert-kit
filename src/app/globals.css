@@ -215,15 +215,15 @@
 
 .ck-morph-word {
   position: absolute;
-  right: -2%;
-  top: 18%;
+  right: -4%;
+  top: 8%;
   font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
-  font-size: clamp(5rem, 18vw, 14rem);
+  font-size: clamp(5rem, 16vw, 12rem);
   font-weight: 700;
   letter-spacing: -0.06em;
   line-height: 0.85;
   color: transparent;
-  -webkit-text-stroke: 1px color-mix(in oklab, var(--foreground) 12%, transparent);
+  -webkit-text-stroke: 1px color-mix(in oklab, var(--primary) 22%, transparent);
   opacity: 0;
   animation: ck-morph 12s ease-in-out infinite;
   user-select: none;
