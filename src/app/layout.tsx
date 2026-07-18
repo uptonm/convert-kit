@@ -3,6 +3,11 @@ import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/goo
 import { Toaster } from "@/components/ui/sonner";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { ThemeProvider } from "@/components/theme-provider";
+import {
+  DEFAULT_DESCRIPTION,
+  rootMetadata,
+  SITE_URL,
+} from "@/lib/seo";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
@@ -23,14 +28,27 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "ConvertKit — own your conversions",
-    template: "%s · ConvertKit",
+export const metadata: Metadata = rootMetadata;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "ConvertKit",
+  url: SITE_URL,
+  description: DEFAULT_DESCRIPTION,
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "Any",
+  isAccessibleForFree: true,
+  author: {
+    "@type": "Person",
+    name: "Mike Upton",
+    url: "https://uptonm.dev",
   },
-  description:
-    "Browser-first file converters you own end-to-end. EPUB, PDF, images, ffmpeg.wasm, JSON, and more — no third-party conversion APIs.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://convert.uptonm.dev"),
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -40,6 +58,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`dark ${display.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
+        />
+      </head>
       <body className="relative min-h-full flex flex-col font-sans text-foreground">
         <div className="ck-grain" aria-hidden />
         <ThemeProvider>

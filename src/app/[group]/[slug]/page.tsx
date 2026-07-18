@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ConverterShell } from "@/components/converter-shell";
 import { CONVERTERS, getConverter, isGroupSlug } from "@/lib/registry";
+import { createPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return CONVERTERS.map((c) => ({ group: c.group, slug: c.slug }));
@@ -15,10 +16,11 @@ export async function generateMetadata({
   const { group, slug } = await params;
   const converter = getConverter(group, slug);
   if (!converter) return {};
-  return {
+  return createPageMetadata({
     title: converter.title,
     description: converter.description,
-  };
+    path: `/${group}/${slug}`,
+  });
 }
 
 export default async function ConverterPage({

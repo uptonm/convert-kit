@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ConverterSearch } from "@/components/converter-search";
 import { getGroup, isGroupSlug, convertersByGroup } from "@/lib/registry";
+import { createPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return [
@@ -26,10 +27,11 @@ export async function generateMetadata({
   const { group: slug } = await params;
   const group = getGroup(slug);
   if (!group) return {};
-  return {
+  return createPageMetadata({
     title: group.name,
     description: group.description,
-  };
+    path: `/${slug}`,
+  });
 }
 
 export default async function GroupPage({ params }: { params: Promise<{ group: string }> }) {
