@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Terms" };
+export const metadata: Metadata = createPageMetadata({
+  title: "Terms",
+  description:
+    "Terms for using ConvertKit's browser-based file conversion tools.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

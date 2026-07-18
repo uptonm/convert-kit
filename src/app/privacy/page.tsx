@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Privacy" };
+export const metadata: Metadata = createPageMetadata({
+  title: "Privacy",
+  description:
+    "How ConvertKit keeps browser-based file conversion private and what limited data can leave your device.",
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

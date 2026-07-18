@@ -1,16 +1,29 @@
 import { CONVERTERS, GROUPS } from "@/lib/registry";
+import { SITE_URL } from "@/lib/seo";
+import type { MetadataRoute } from "next";
 
-export default function sitemap() {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://convert.uptonm.dev";
-  const now = new Date();
+export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    { url: base, lastModified: now },
-    { url: `${base}/privacy`, lastModified: now },
-    { url: `${base}/terms`, lastModified: now },
-    ...GROUPS.map((g) => ({ url: `${base}/${g.slug}`, lastModified: now })),
+    { url: SITE_URL, changeFrequency: "weekly" as const, priority: 1 },
+    {
+      url: `${SITE_URL}/privacy`,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${SITE_URL}/terms`,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+    ...GROUPS.map((group) => ({
+      url: `${SITE_URL}/${group.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
     ...CONVERTERS.map((c) => ({
-      url: `${base}/${c.group}/${c.slug}`,
-      lastModified: now,
+      url: `${SITE_URL}/${c.group}/${c.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
   ];
 }
