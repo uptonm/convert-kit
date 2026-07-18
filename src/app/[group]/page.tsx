@@ -39,11 +39,11 @@ export default async function GroupPage({ params }: { params: Promise<{ group: s
   const count = convertersByGroup(slug).length;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 px-4 py-12">
-      <div className="space-y-2">
-        <h1 className="font-[family-name:var(--font-display)] text-4xl tracking-tight">{group.name}</h1>
+    <div className="mx-auto max-w-6xl space-y-10 px-4 py-14 sm:px-6">
+      <div className="space-y-3">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary/80">{count} converters</p>
+        <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">{group.name}</h1>
         <p className="max-w-2xl text-muted-foreground">{group.description}</p>
-        <p className="text-sm text-teal-800/80">{count} converters in this group</p>
       </div>
       <ConverterSearch initialGroup={slug} />
     </div>

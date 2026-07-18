@@ -1,67 +1,77 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { ConverterSearch } from "@/components/converter-search";
-import { ConverterCard } from "@/components/converter-card";
-import { GROUPS, popularConverters } from "@/lib/registry";
+import { FormatMorph } from "@/components/format-morph";
+import { popularConverters, converterHref } from "@/lib/registry";
 
 export default function HomePage() {
-  const popular = popularConverters();
+  const popular = popularConverters().slice(0, 6);
 
   return (
     <div>
-      <section className="relative overflow-hidden border-b border-border/60">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:py-24">
-          <div className="space-y-5">
-            <p className="font-[family-name:var(--font-display)] text-5xl leading-[0.95] tracking-tight text-primary sm:text-6xl lg:text-7xl">
-              ConvertKit
-            </p>
-            <h1 className="max-w-xl text-xl text-foreground/90 sm:text-2xl">
-              Own every conversion end-to-end — in your browser, on your files.
-            </h1>
-            <p className="max-w-lg text-sm text-muted-foreground">
-              No third-party conversion APIs. EPUB, PDF, images, ffmpeg.wasm, data formats, and more.
-              Rates APIs for currency are fine; your files never get shipped out to be converted.
-            </p>
-            <div className="flex flex-wrap gap-2 pt-2">
-              {GROUPS.map((g) => (
-                <Link
-                  key={g.slug}
-                  href={`/${g.slug}`}
-                  className="rounded-full border border-primary/25 bg-[var(--surface)] px-3 py-1.5 text-sm text-primary transition-colors hover:border-primary/50"
-                >
-                  {g.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div
-            aria-hidden
-            className="relative min-h-56 overflow-hidden rounded-2xl border border-teal-900/10 bg-[linear-gradient(145deg,#0f766e_0%,#134e4a_45%,#1c1917_100%)] shadow-[0_30px_80px_rgba(15,118,110,0.25)]"
-          >
-            <div className="absolute inset-0 opacity-40 [background-image:repeating-linear-gradient(90deg,transparent,transparent_11px,rgba(255,255,255,0.06)_12px),repeating-linear-gradient(0deg,transparent,transparent_11px,rgba(255,255,255,0.04)_12px)]" />
-            <div className="absolute bottom-6 left-6 right-6 space-y-2 text-teal-50">
-              <p className="font-[family-name:var(--font-display)] text-2xl">Browser-owned pipeline</p>
-              <p className="text-sm text-teal-100/80">WASM · Canvas · pdf-lib · ffmpeg.wasm</p>
-            </div>
+      <section className="relative min-h-[min(88vh,820px)] overflow-hidden border-b border-white/5">
+        <FormatMorph />
+        <div className="relative z-[1] mx-auto flex max-w-6xl flex-col justify-end px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-32">
+          <p className="ck-rise font-mono text-[11px] uppercase tracking-[0.22em] text-primary/90">
+            Local conversion · convert.uptonm.dev
+          </p>
+          <h1 className="ck-rise ck-rise-delay-1 mt-5 font-display text-[clamp(3.25rem,12vw,7.5rem)] font-extrabold leading-[0.88] tracking-[-0.05em] text-foreground">
+            Convert
+            <span className="text-primary">Kit</span>
+          </h1>
+          <p className="ck-rise ck-rise-delay-2 mt-6 max-w-md text-lg text-muted-foreground text-balance sm:text-xl">
+            Files in. Files out. Nothing leaves your browser.
+          </p>
+          <div className="ck-rise ck-rise-delay-3 mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="#catalog"
+              className="inline-flex h-11 items-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition hover:brightness-110"
+            >
+              Browse converters
+            </a>
+            <Link
+              href="/documents/epub-to-pdf"
+              className="inline-flex h-11 items-center gap-1.5 rounded-full border border-white/10 px-5 text-sm text-foreground/90 transition hover:border-primary/40 hover:text-primary"
+            >
+              Try EPUB → PDF
+              <ArrowUpRight className="size-3.5 opacity-70" />
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl space-y-8 px-4 py-12">
-        <div>
-          <h2 className="font-[family-name:var(--font-display)] text-2xl text-foreground">Popular</h2>
-          <p className="text-sm text-muted-foreground">Live converters people reach for first.</p>
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="mb-8">
+          <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Reach for these first</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Live converters, ready in the browser.</p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {popular.map((c) => (
-            <ConverterCard key={c.id} converter={c} />
+        <ul className="divide-y divide-white/5 border-y border-white/5">
+          {popular.map((c, idx) => (
+            <li key={c.id}>
+              <Link
+                href={converterHref(c)}
+                className="group flex items-center gap-4 py-4 transition-colors hover:bg-white/[0.02] sm:gap-6"
+              >
+                <span className="w-8 font-mono text-xs text-muted-foreground/70">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-display text-base font-semibold tracking-tight group-hover:text-primary sm:text-lg">
+                    {c.title}
+                  </span>
+                  <span className="mt-0.5 block truncate text-sm text-muted-foreground">{c.description}</span>
+                </span>
+                <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition group-hover:text-primary" />
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <section className="mx-auto max-w-6xl space-y-6 px-4 pb-20">
+      <section id="catalog" className="mx-auto max-w-6xl space-y-8 px-4 pb-24 sm:px-6">
         <div>
-          <h2 className="font-[family-name:var(--font-display)] text-2xl text-foreground">Catalog</h2>
-          <p className="text-sm text-muted-foreground">Search the full registry — live and coming soon.</p>
+          <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Full catalog</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Search by format, or filter by group.</p>
         </div>
         <ConverterSearch />
       </section>

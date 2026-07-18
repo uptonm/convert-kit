@@ -88,21 +88,23 @@ export function ConverterShell({ converter }: { converter: ConverterDef }) {
   }
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
-      <div className="space-y-3">
+    <div className="mx-auto max-w-3xl space-y-8">
+      <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <EngineBadge engine={converter.engine} status={converter.status} />
           {converter.subgroup ? (
-            <span className="text-xs uppercase tracking-wide text-teal-800/70">{converter.subgroup}</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+              {converter.subgroup}
+            </span>
           ) : null}
         </div>
         <h1
-          className="font-[family-name:var(--font-display)] text-3xl tracking-tight text-foreground sm:text-4xl"
+          className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-5xl"
           data-testid="converter-title"
         >
           {converter.title}
         </h1>
-        <p className="text-muted-foreground">{converter.description}</p>
+        <p className="max-w-2xl text-muted-foreground">{converter.description}</p>
         {converter.notes ? (
           <Alert>
             <AlertTitle>Note</AlertTitle>
@@ -118,7 +120,7 @@ export function ConverterShell({ converter }: { converter: ConverterDef }) {
         {converter.reverseSlug ? (
           <Link
             href={`/${converter.group}/${converter.reverseSlug}`}
-            className="inline-flex h-7 items-center gap-1.5 rounded-lg border border-border px-2.5 text-[0.8rem] hover:bg-muted"
+            className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/10 px-3 text-[13px] text-muted-foreground transition hover:border-primary/40 hover:text-primary"
           >
             <ArrowLeftRight className="size-3.5" />
             Switch to reverse
@@ -134,11 +136,11 @@ export function ConverterShell({ converter }: { converter: ConverterDef }) {
           </AlertDescription>
         </Alert>
       ) : (
-        <div className="space-y-4 rounded-2xl border border-border/80 bg-[var(--surface)] p-5">
+        <div className="space-y-5 rounded-2xl border border-white/8 bg-white/[0.02] p-5 sm:p-6">
           {needsFile ? (
             <div className="space-y-2">
               <Label>File{multiFile ? "s" : ""}</Label>
-              <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-teal-800/30 bg-teal-50/40 px-4 py-10 text-center transition-colors hover:bg-teal-50/70">
+              <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-primary/25 bg-primary/[0.04] px-4 py-12 text-center transition-colors hover:border-primary/45 hover:bg-primary/[0.07]">
                 <input
                   type="file"
                   className="hidden"
@@ -147,7 +149,7 @@ export function ConverterShell({ converter }: { converter: ConverterDef }) {
                   data-testid="file-input"
                   onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
                 />
-                <span className="text-sm font-medium text-teal-900">
+                <span className="text-sm font-medium text-foreground">
                   {files.length
                     ? files.map((f) => f.name).join(", ")
                     : multiFile
@@ -223,7 +225,7 @@ export function ConverterShell({ converter }: { converter: ConverterDef }) {
           ) : null}
 
           <Button
-            className="bg-teal-800 text-teal-50 hover:bg-teal-900"
+            className="rounded-full bg-primary text-primary-foreground hover:brightness-110"
             disabled={busy}
             onClick={onConvert}
             data-testid="convert-button"

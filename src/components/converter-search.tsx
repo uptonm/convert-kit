@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { ConverterCard } from "@/components/converter-card";
 import { searchConverters, GROUPS, type GroupSlug } from "@/lib/registry";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function ConverterSearch({ initialGroup }: { initialGroup?: GroupSlug }) {
@@ -19,14 +18,12 @@ export function ConverterSearch({ initialGroup }: { initialGroup?: GroupSlug }) 
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <Input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search converters — epub, json, mp4, temperature…"
-          className="h-11 bg-[var(--surface)]"
-        />
-      </div>
+      <Input
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder="Search — epub, json, mp4, temperature…"
+        className="h-12 rounded-xl border-white/10 bg-white/[0.03] text-base placeholder:text-muted-foreground/60 focus-visible:border-primary/40 focus-visible:ring-primary/20"
+      />
       <div className="flex flex-wrap gap-2">
         <Chip active={group === "all"} onClick={() => setGroup("all")}>
           All
@@ -37,8 +34,8 @@ export function ConverterSearch({ initialGroup }: { initialGroup?: GroupSlug }) 
           </Chip>
         ))}
       </div>
-      <p className="text-sm text-muted-foreground">
-        {results.length} converter{results.length === 1 ? "" : "s"}
+      <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+        {results.length} result{results.length === 1 ? "" : "s"}
       </p>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {results.map((c) => (
@@ -59,14 +56,17 @@ function Chip({
   onClick: () => void;
 }) {
   return (
-    <Button
+    <button
       type="button"
-      variant={active ? "default" : "outline"}
-      size="sm"
       onClick={onClick}
-      className={cn(active && "bg-teal-800 text-teal-50 hover:bg-teal-800")}
+      className={cn(
+        "rounded-full border px-3 py-1.5 text-[13px] transition-colors",
+        active
+          ? "border-primary/40 bg-primary/15 text-primary"
+          : "border-white/10 text-muted-foreground hover:border-white/20 hover:text-foreground",
+      )}
     >
       {children}
-    </Button>
+    </button>
   );
 }
