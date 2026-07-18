@@ -1,7 +1,7 @@
 import { CONVERTERS, GROUPS } from "@/lib/registry";
 
 export default function sitemap() {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://convert.uptonm.dev";
   const now = new Date();
   return [
     { url: base, lastModified: now },

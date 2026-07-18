@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   description:
     "Browser-first file converters you own end-to-end. EPUB, PDF, images, ffmpeg.wasm, JSON, and more — no third-party conversion APIs.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://convert.uptonm.dev"),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
