@@ -93,7 +93,7 @@
   --card-foreground: #f2f1ef;
   --popover: #121214;
   --popover-foreground: #f2f1ef;
-  --primary: #d4a27f;
+  --primary: #e2b48a;
   --primary-foreground: #1a120c;
   --secondary: #1c1c20;
   --secondary-foreground: #f2f1ef;
@@ -155,8 +155,8 @@
 
 @keyframes ck-rise {
   from {
-    opacity: 0;
-    transform: translateY(12px);
+    opacity: 0.01;
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -194,7 +194,8 @@
 }
 
 .ck-rise {
-  animation: ck-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: ck-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 1; /* never leave brand invisible if animation is blocked */
 }
 .ck-rise-delay-1 {
   animation-delay: 0.08s;
@@ -229,11 +230,11 @@
   user-select: none;
 }
 
-.ck-grain {
+  .ck-grain {
   pointer-events: none;
   position: fixed;
   inset: -20%;
-  opacity: 0.045;
+  opacity: 0.028;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: ck-grain 8s steps(2) infinite;
   z-index: 0;
