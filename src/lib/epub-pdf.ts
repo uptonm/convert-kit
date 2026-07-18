@@ -72,7 +72,7 @@ export async function pdfToEpub(file: File): Promise<Blob> {
   return buildEpub(title, chunks);
 }
 
-async function textChaptersToPdf(title: string, chapters: string[]): Promise<Blob> {
+export async function textChaptersToPdf(title: string, chapters: string[]): Promise<Blob> {
   const pdf = await PDFDocument.create();
   const font = await pdf.embedFont(StandardFonts.TimesRoman);
   const fontBold = await pdf.embedFont(StandardFonts.TimesRomanBold);
@@ -115,7 +115,8 @@ async function textChaptersToPdf(title: string, chapters: string[]): Promise<Blo
   return new Blob([out.buffer as ArrayBuffer], { type: "application/pdf" });
 }
 
-function buildEpub(title: string, chapters: string[]): Blob {
+/** Build a minimal EPUB 3 from plain-text chapters (owned, text-forward). */
+export function buildEpub(title: string, chapters: string[]): Blob {
   const safeTitle = title.replace(/[<>&]/g, "") || "Document";
   const manifestItems = chapters
     .map(
@@ -178,7 +179,8 @@ ${paras}
   return new Blob([zipped.buffer as ArrayBuffer], { type: "application/epub+zip" });
 }
 
-function extractPdfStrings(bytes: Uint8Array): string {
+/** Best-effort scrape of literal strings from PDF content streams. */
+export function extractPdfStrings(bytes: Uint8Array): string {
   // Best-effort string scrape from content streams (owned, no remote API).
   const text = new TextDecoder("latin1").decode(bytes);
   const bits: string[] = [];
@@ -245,7 +247,7 @@ function textBetween(html: string, re: RegExp) {
   return html.match(re)?.[1];
 }
 
-function htmlToPlain(html: string) {
+export function htmlToPlain(html: string) {
   return stripTags(
     html
       .replace(/<script[\s\S]*?<\/script>/gi, "")
@@ -273,7 +275,7 @@ function escapeXml(s: string) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function sanitizePdfText(s: string) {
+export function sanitizePdfText(s: string) {
   // WinAnsi-safe-ish subset for StandardFonts
   return s.replace(/[^\x09\x0A\x0D\x20-\x7E]/g, "?");
 }
