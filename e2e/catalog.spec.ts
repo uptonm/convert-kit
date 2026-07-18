@@ -3,8 +3,10 @@ import { GROUPS } from "../src/lib/registry/groups";
 
 test("home shows ConvertKit and catalog", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText("ConvertKit").first()).toBeVisible();
-  await expect(page.getByPlaceholder(/Search converters/i)).toBeVisible();
+  await expect(page.getByRole("heading", { name: /ConvertKit/i })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Browse converters/i })).toBeVisible();
+  await page.getByRole("link", { name: /Browse converters/i }).click();
+  await expect(page.getByPlaceholder(/Search/i)).toBeVisible();
 });
 
 for (const group of GROUPS) {

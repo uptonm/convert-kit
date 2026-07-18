@@ -13,6 +13,25 @@ import cronstrue from "cronstrue";
 import { canvasToBlob, downloadBlob, downloadText, loadImage } from "@/lib/download";
 import { ffmpegConvert } from "@/lib/ffmpeg";
 import type { ConverterDef } from "@/lib/registry";
+import {
+  mobiToEpub,
+  azw3ToEpub,
+  epubToMobi,
+  epubToAzw3,
+  fb2ToEpub,
+  epubToFb2,
+} from "@/lib/stretch-ebooks";
+import {
+  pdfToDocx,
+  docxToPdf,
+  docxToOdt,
+  odtToDocx,
+  pptxToPdf,
+  xlsxToPdf,
+  latexToPdf,
+} from "@/lib/stretch-office";
+import { cbzToPdf, pdfToCbz, djvuToPdf, pdfToDjvu } from "@/lib/stretch-comics";
+import { parquetToCsv, csvToParquet } from "@/lib/stretch-parquet";
 
 export type ConvertResult =
   | { kind: "download"; blob: Blob; filename: string }
@@ -47,6 +66,164 @@ export async function runClientConvert(input: ConvertInput): Promise<ConvertResu
         kind: "download",
         blob: await pdfToEpub(file),
         filename: replaceExt(file.name, "epub"),
+      };
+    }
+    case "mobi-to-epub": {
+      if (!file) throw new Error("Choose a MOBI file");
+      return {
+        kind: "download",
+        blob: await mobiToEpub(file),
+        filename: replaceExt(file.name, "epub"),
+      };
+    }
+    case "epub-to-mobi": {
+      if (!file) throw new Error("Choose an EPUB file");
+      return {
+        kind: "download",
+        blob: await epubToMobi(file),
+        filename: replaceExt(file.name, "mobi"),
+      };
+    }
+    case "azw3-to-epub": {
+      if (!file) throw new Error("Choose an AZW3 file");
+      return {
+        kind: "download",
+        blob: await azw3ToEpub(file),
+        filename: replaceExt(file.name, "epub"),
+      };
+    }
+    case "epub-to-azw3": {
+      if (!file) throw new Error("Choose an EPUB file");
+      return {
+        kind: "download",
+        blob: await epubToAzw3(file),
+        filename: replaceExt(file.name, "azw3"),
+      };
+    }
+    case "fb2-to-epub": {
+      if (!file) throw new Error("Choose an FB2 file");
+      return {
+        kind: "download",
+        blob: await fb2ToEpub(file),
+        filename: replaceExt(file.name, "epub"),
+      };
+    }
+    case "epub-to-fb2": {
+      if (!file) throw new Error("Choose an EPUB file");
+      return {
+        kind: "download",
+        blob: await epubToFb2(file),
+        filename: replaceExt(file.name, "fb2"),
+      };
+    }
+    case "cbz-to-pdf": {
+      if (!file) throw new Error("Choose a CBZ file");
+      return {
+        kind: "download",
+        blob: await cbzToPdf(file),
+        filename: replaceExt(file.name, "pdf"),
+      };
+    }
+    case "pdf-to-cbz": {
+      if (!file) throw new Error("Choose a PDF file");
+      return {
+        kind: "download",
+        blob: await pdfToCbz(file),
+        filename: replaceExt(file.name, "cbz"),
+      };
+    }
+    case "pdf-to-docx": {
+      if (!file) throw new Error("Choose a PDF file");
+      return {
+        kind: "download",
+        blob: await pdfToDocx(file),
+        filename: replaceExt(file.name, "docx"),
+      };
+    }
+    case "docx-to-pdf": {
+      if (!file) throw new Error("Choose a DOCX file");
+      return {
+        kind: "download",
+        blob: await docxToPdf(file),
+        filename: replaceExt(file.name, "pdf"),
+      };
+    }
+    case "docx-to-odt": {
+      if (!file) throw new Error("Choose a DOCX file");
+      return {
+        kind: "download",
+        blob: await docxToOdt(file),
+        filename: replaceExt(file.name, "odt"),
+      };
+    }
+    case "odt-to-docx": {
+      if (!file) throw new Error("Choose an ODT file");
+      return {
+        kind: "download",
+        blob: await odtToDocx(file),
+        filename: replaceExt(file.name, "docx"),
+      };
+    }
+    case "pptx-to-pdf": {
+      if (!file) throw new Error("Choose a PPTX file");
+      return {
+        kind: "download",
+        blob: await pptxToPdf(file),
+        filename: replaceExt(file.name, "pdf"),
+      };
+    }
+    case "xlsx-to-pdf": {
+      if (!file) throw new Error("Choose an XLSX file");
+      return {
+        kind: "download",
+        blob: await xlsxToPdf(file),
+        filename: replaceExt(file.name, "pdf"),
+      };
+    }
+    case "latex-to-pdf": {
+      return {
+        kind: "download",
+        blob: await latexToPdf(file ?? null, text),
+        filename: replaceExt(file?.name ?? "document.tex", "pdf"),
+      };
+    }
+    case "djvu-to-pdf": {
+      if (!file) throw new Error("Choose a DjVu file");
+      return {
+        kind: "download",
+        blob: await djvuToPdf(file),
+        filename: replaceExt(file.name, "pdf"),
+      };
+    }
+    case "pdf-to-djvu": {
+      if (!file) throw new Error("Choose a PDF file");
+      return {
+        kind: "download",
+        blob: await pdfToDjvu(file),
+        filename: replaceExt(file.name, "djvu"),
+      };
+    }
+    case "avif-to-png":
+    case "png-to-avif": {
+      if (!file) throw new Error("Choose an image");
+      const mime = slug === "avif-to-png" ? "image/png" : "image/avif";
+      const ext = slug === "avif-to-png" ? "png" : "avif";
+      const blob = await rasterConvert(file, mime, slug === "png-to-avif" ? 0.8 : undefined);
+      return { kind: "download", blob, filename: replaceExt(file.name, ext) };
+    }
+    case "parquet-to-csv": {
+      if (!file) throw new Error("Choose a Parquet file");
+      return {
+        kind: "download",
+        blob: await parquetToCsv(file),
+        filename: replaceExt(file.name, "csv"),
+      };
+    }
+    case "csv-to-parquet": {
+      return {
+        kind: "download",
+        blob: await csvToParquet(file ?? null, text),
+        filename: replaceExt(file?.name ?? "data.csv", "parquet"),
       };
     }
     case "markdown-to-html": {

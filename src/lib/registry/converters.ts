@@ -90,7 +90,16 @@ function acceptForFormat(format: string): string | undefined {
     pdf: ".pdf,application/pdf",
     mobi: ".mobi",
     azw3: ".azw3",
-    fb2: ".fb2",
+    fb2: ".fb2,application/x-fictionbook+xml",
+    cbz: ".cbz,application/vnd.comicbook+zip",
+    docx: ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    odt: ".odt,application/vnd.oasis.opendocument.text",
+    pptx: ".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    xlsx: ".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    latex: ".tex,.latex,text/x-tex",
+    djvu: ".djvu,.djv,image/vnd.djvu",
+    avif: "image/avif,.avif",
+    parquet: ".parquet,application/vnd.apache.parquet",
     png: "image/png,.png",
     jpg: "image/jpeg,.jpg,.jpeg",
     jpeg: "image/jpeg,.jpg,.jpeg",
@@ -127,20 +136,20 @@ export const CONVERTERS: ConverterDef[] = [
   }),
   ...one("MOBI", "EPUB", "documents", "client", {
     subgroup: "Ebooks",
-    ambition: "stretch",
     accept: ".mobi",
-    notes: "Unprotected files only — no DRM removal.",
+    notes:
+      "Unprotected MOBI only (no DRM). Text-forward PalmDB scrape → EPUB; layout and images are limited.",
   }),
   ...one("AZW3", "EPUB", "documents", "client", {
     subgroup: "Ebooks",
-    ambition: "stretch",
     accept: ".azw3",
-    notes: "Unprotected files only — no DRM removal.",
+    notes:
+      "Unprotected AZW3/KF8 only (no DRM). Best-effort text extraction → EPUB; not a Calibre-quality clone.",
   }),
   ...one("FB2", "EPUB", "documents", "client", {
     subgroup: "Ebooks",
-    ambition: "stretch",
-    accept: ".fb2",
+    accept: ".fb2,application/x-fictionbook+xml",
+    notes: "FictionBook XML ↔ EPUB chapters. Text-forward; complex markup may be flattened.",
   }),
   ...one("PDF", "EPUB", "documents", "client", {
     subgroup: "Ebooks",
@@ -148,35 +157,52 @@ export const CONVERTERS: ConverterDef[] = [
     accept: ".pdf,application/pdf",
     notes: "Owned in-browser text extraction → EPUB. Layout fidelity is limited.",
   }),
-  ...one("CBZ", "PDF", "documents", "client", { subgroup: "Comics", ambition: "stretch" }),
+  ...one("CBZ", "PDF", "documents", "client", {
+    subgroup: "Comics",
+    accept: ".cbz,application/vnd.comicbook+zip",
+    notes:
+      "CBZ (zipped images) ↔ PDF. PDF→CBZ embeds images when present, otherwise renders text pages to PNGs.",
+  }),
   ...one("PDF", "DOCX", "documents", "client", {
     subgroup: "Office",
-    ambition: "stretch",
     accept: ".pdf,application/pdf",
+    notes: "Text-forward PDF ↔ DOCX. No layout recreation; images/tables are not preserved.",
   }),
   ...one("DOCX", "ODT", "documents", "client", {
     subgroup: "Office",
-    ambition: "stretch",
+    accept:
+      ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    notes: "Text-forward DOCX ↔ ODT via mammoth / minimal ODT ZIP. Styling is not preserved.",
   }),
   ...one("PPTX", "PDF", "documents", "client", {
     subgroup: "Office",
-    ambition: "stretch",
     bidirectional: false,
+    accept:
+      ".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    notes: "Extracts slide text into a paginated PDF. Images and exact layout are not preserved.",
   }),
   ...one("XLSX", "PDF", "documents", "client", {
     subgroup: "Office",
-    ambition: "stretch",
     bidirectional: false,
+    accept:
+      ".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    notes: "Renders each sheet as CSV-like text in a PDF. Charts/formatting are not preserved.",
   }),
   ...one("LaTeX", "PDF", "documents", "client", {
     subgroup: "Office",
-    ambition: "stretch",
     bidirectional: false,
+    inputMode: "both",
+    accept: ".tex,.latex,text/x-tex,text/plain",
+    notes:
+      "LaTeX → HTML (latex.js) when possible, else command-stripped text → PDF. Not a full TeX engine.",
   }),
   ...one("DjVu", "PDF", "documents", "client", {
     subgroup: "Office",
-    ambition: "stretch",
-  }),  {
+    accept: ".djvu,.djv,image/vnd.djvu",
+    notes:
+      "Best-effort: extracts text/embedded images from DjVu → PDF; PDF→DjVu writes a minimal text-layer DjVu (no JB2/IW44 encoder).",
+  }),
+  {
     id: "documents/pdf-merge",
     slug: "pdf-merge",
     title: "Merge PDFs",
@@ -909,14 +935,17 @@ export const CONVERTERS: ConverterDef[] = [
     inputMode: "text",
   },
 
-  // Stretch / coming soon highlights for catalog completeness
+  // ——— Images / data (formerly stretch) ———
   ...one("AVIF", "PNG", "images", "client", {
     subgroup: "Format",
-    ambition: "stretch",
+    notes:
+      "Browser canvas encode/decode. Requires AVIF support in the runtime; fidelity matches the browser encoder.",
   }),
   ...one("Parquet", "CSV", "data", "client", {
     subgroup: "Structured",
-    ambition: "stretch",
+    inputMode: "both",
+    accept: ".parquet,application/vnd.apache.parquet",
+    notes: "hyparquet read / hyparquet-writer write. Nested types are flattened to CSV cells.",
   }),
 ];
 

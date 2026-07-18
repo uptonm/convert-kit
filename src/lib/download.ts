@@ -38,7 +38,14 @@ export async function canvasToBlob(
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
-      (blob) => (blob ? resolve(blob) : reject(new Error("Canvas export failed"))),
+      (blob) =>
+        blob
+          ? resolve(blob)
+          : reject(
+              new Error(
+                `Canvas export failed for ${type}. This format may be unsupported in this browser.`,
+              ),
+            ),
       type,
       quality,
     );

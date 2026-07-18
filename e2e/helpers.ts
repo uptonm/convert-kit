@@ -82,6 +82,44 @@ export function drivePlan(c: ConverterDef): {
     case "txt-to-pdf":
       return { kind: "download", text: "Plain text to PDF" };
 
+    case "mobi-to-epub":
+      return { kind: "download", files: [fixture("sample.mobi")] };
+    case "epub-to-mobi":
+    case "epub-to-azw3":
+    case "epub-to-fb2":
+      return { kind: "download", files: [fixture("sample.epub")] };
+    case "azw3-to-epub":
+      return { kind: "download", files: [fixture("sample.azw3")] };
+    case "fb2-to-epub":
+      return { kind: "download", files: [fixture("sample.fb2")] };
+    case "cbz-to-pdf":
+      return { kind: "download", files: [fixture("sample.cbz")] };
+    case "pdf-to-cbz":
+    case "pdf-to-docx":
+    case "pdf-to-djvu":
+      return { kind: "download", files: [fixture("sample.pdf")] };
+    case "docx-to-pdf":
+    case "docx-to-odt":
+      return { kind: "download", files: [fixture("sample.docx")] };
+    case "odt-to-docx":
+      return { kind: "download", files: [fixture("sample.odt")] };
+    case "pptx-to-pdf":
+      return { kind: "download", files: [fixture("sample.pptx")] };
+    case "xlsx-to-pdf":
+      return { kind: "download", files: [fixture("sample.xlsx")] };
+    case "latex-to-pdf":
+      return { kind: "download", files: [fixture("sample.tex")] };
+    case "djvu-to-pdf":
+      return { kind: "download", files: [fixture("sample.djvu")] };
+    case "avif-to-png":
+      return { kind: "download", files: [fixture("sample.avif")] };
+    case "png-to-avif":
+      return { kind: "download", files: [fixture("pixel.png")] };
+    case "parquet-to-csv":
+      return { kind: "download", files: [fixture("sample.parquet")] };
+    case "csv-to-parquet":
+      return { kind: "download", files: [fixture("sample.csv")] };
+
     case "png-to-jpg":
     case "png-to-webp":
     case "image-to-base64":
