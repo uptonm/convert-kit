@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored ffmpeg runtime bundles — minified, not our source.
+    "public/ffmpeg/**",
   ]),
 ]);
 
